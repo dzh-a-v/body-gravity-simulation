@@ -1,16 +1,11 @@
 ﻿#include "simulation.h"
 #include "physics.h"
 
-void Simulation::step(bool twoBodyApprox) {
-    // 1. Обнуляем ускорения
-    for (auto& body : bodies) {
-        body.acceleration = { 0, 0 };
-    }
+void Simulation::step() {
+    // Обнуление ускорений теперь внутри Physics::computeAccelerations
+    Physics::computeAccelerations(*this);
 
-    // 2. Вычисляем ускорения через Physics
-    Physics::computeAccelerations(*this, twoBodyApprox);
-
-    // 3. Интегрируем уравнения движения (метод Эйлера — для MVP)
+    // Интеграция методом Эйлера
     for (auto& body : bodies) {
         body.velocity = body.velocity + body.acceleration * dt;
         body.position = body.position + body.velocity * dt;
@@ -21,11 +16,13 @@ void Simulation::step(bool twoBodyApprox) {
 
 bool Simulation::hasCollision() const {
     if (bodies.size() < 2) return false;
-
-    const Body& b1 = bodies[0];
-    const Body& b2 = bodies[1];
-
-    Vec2 diff = b1.position - b2.position;
-    double distance = diff.norm();
-    return distance <= (b1.radius + b2.radius);
+    for (size_t i = 0; i < bodies.size(); ++i) {
+        for (size_t j = i + 1; j < bodies.size(); ++j) {
+            Vec2 diff = bodies[i].position - bodies[j].position;
+            if (diff.norm() <= bodies[i].radius + bodies[j].radius) {
+                return true;
+            }
+        }
+    }
+    return false;
 }
