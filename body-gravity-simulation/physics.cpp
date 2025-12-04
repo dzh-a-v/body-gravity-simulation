@@ -4,7 +4,7 @@
 
 void Physics::computeAccelerations(Simulation& sim, bool twoBodyApprox) {
     if (sim.bodies.empty()) return;
-
+    
     if (twoBodyApprox && sim.bodies.size() >= 2) {
         // Только первое тело создаёт гравитацию
         const Body& central = sim.bodies[0];
@@ -18,7 +18,7 @@ void Physics::computeAccelerations(Simulation& sim, bool twoBodyApprox) {
             }
         }
     }
-    else { // Полный N-тел расчёт (для будущего)
+    else { // n-body calculations (for the future)
         for (size_t i = 0; i < sim.bodies.size(); ++i) {
             for (size_t j = 0; j < sim.bodies.size(); ++j) {
                 if (i == j) continue;
