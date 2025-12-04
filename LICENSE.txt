@@ -17,6 +17,3 @@ Under the following terms:
 
 No additional restrictions — You may not apply legal terms or technological measures
 that legally restrict others from doing anything the license permits.
-
-THIS SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND...
-(оставь это, если хочешь, но CC уже покрывает "as is")
