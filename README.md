@@ -79,6 +79,7 @@ ___
 **Near updates:**
 - Enable setting the objects during runtime.
 - Make GUI with text-style interface.
+- Load basic objects (like Earth, Moon, Sun, etc.).
 
 **Big updates:**
 - Make GUI with objects displayed.
