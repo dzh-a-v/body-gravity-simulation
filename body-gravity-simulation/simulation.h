@@ -15,5 +15,5 @@ public:
     bool hasCollision() const;
     bool isFinished = false;
 
-    void step(bool twoBodyApprox = true);
+    void step();
 };

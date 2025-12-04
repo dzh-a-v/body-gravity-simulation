@@ -6,5 +6,5 @@ class Physics {
 public:
     static constexpr LL double G = 6.67430e-11;
 
-    static void computeAccelerations(Simulation& sim, bool twoBodyApprox);
+    static void computeAccelerations(Simulation& sim);
 };
