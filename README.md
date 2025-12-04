@@ -70,3 +70,16 @@ r_new = r + v_new * dt.
 - перейти на более сложную физику,
 
 и многое другое :)
+
+___
+### Detailed update plan
+**For now:**
+- Check current physics between several celestial bodies; fix if needed.
+
+**Near updates:**
+- Enable setting the objects during runtime.
+- Make GUI with text-style interface.
+
+**Big updates:**
+- Make GUI with objects displayed.
+- Switch to more accurate physics.
