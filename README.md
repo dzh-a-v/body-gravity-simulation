@@ -3,14 +3,10 @@
 This program simulates gravitational interactions between bodies (originally intended for celestial objects, but any parameters can be used).
 
 ## Current state
-Currently, the program is console-only and supports exactly two bodies:
+Currently, the program is console-only.
 
-- One is static and generates gravity,
-- The other is dynamic but does not produce gravity.
-
-Essentially, it simulates the interaction between a very massive body (e.g., a planet) and a very light one (e.g., a satellite or meteor), where the lighter body’s gravitational influence is negligible.
-
-Despite its simplicity, this program is more physically accurate than most online calculators, which typically assume constant surface gravity and ignore how gravity weakens with distance.
+Despite its simplicity, this program is more physically accurate than most online calculators, which typically assume constant surface gravity and ignore how gravity weakens with distance. It also calculates very
+small changes (like movements across the distance less than the size of protons) successfully.
 
 For example, when calculating the free-fall time of an object dropped from 1000 km above Earth’s surface:
 
@@ -36,7 +32,7 @@ Note: While Euler integration is simple, it’s sufficient for this MVP. Future 
 ## Future plans
 - Add support for initial velocity (to enable orbital trajectories),
 - Implement a graphical user interface (Qt),
-- Extend to full N-body simulation (all bodies interact).
+- Switch to more complex laws of physics,
 
 ... and much more!
 
@@ -47,9 +43,8 @@ ___
 Это программа для расчёта взаимодействий тел (по задумке -- космических, но можно задать любые параметры) через гравитацию.
 
 ## Текущее состояние программы
-Сейчас программа имеет только **консольный вид** и поддерживает **только два тела**, **одно из которых статическое и обладает гравитацией**, **другое -- динамическое, но не обладает гравитацией**. 
-По сути, имитируется взаимодействие очень маленького и очень большого тела, где массой маленького тела можно пренебречь, т.к. оно практически не оказывает никакого воздействия на большое. 
-Однако уже сейчас **эта программа считает правильнее онлайн-калькуляторов**, которые в большинстве своём делают расчёты только по гравитационной постоянной Земли / какой-л. другой планеты, 
+Сейчас программа имеет только **консольный вид**. Программа считает передвижения аж меньше размера протона.
+Уже сейчас **эта программа считает правильнее онлайн-калькуляторов**, которые в большинстве своём делают расчёты только по гравитационной постоянной Земли / какой-л. другой планеты, 
 не учитывая расстояние между объектами. 
 Так, при расчёте длительности падения объекта на высоте 1000 км от поверхности Земли другие программы показывают время в 450 секунд (примерно), 
 в то время как моя программа -- 510, т.к. на большом расстоянии на тело будет слабее действовать сила тяжести Земли и ускорение набираться будет медленнее.
@@ -72,6 +67,6 @@ r_new = r + v_new * dt.
 В будущем планируется:
 - добавить поддержку задачи изначальной траектории движения (чтобы тело могло двигаться по орбите),
 - добавить графический интерфейс,
-- добавить поддержку нескольких объектов,
+- перейти на более сложную физику,
 
 и многое другое :)
