@@ -4,7 +4,7 @@
 
 void Physics::computeAccelerations(Simulation& sim, bool twoBodyApprox) {
     if (sim.bodies.empty()) return;
-
+    
     if (twoBodyApprox && sim.bodies.size() >= 2) {
         // Только первое тело создаёт гравитацию
         const Body& central = sim.bodies[0];
