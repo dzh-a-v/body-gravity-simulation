@@ -1,5 +1,5 @@
 # en
-## Gravity-based N-Body Simulation (MVP)
+## Gravity-based N-Body Simulation (alpha)
 This program simulates gravitational interactions between bodies (originally intended for celestial objects, but any parameters can be used).
 
 ## Current state
@@ -73,14 +73,16 @@ r_new = r + v_new * dt.
 
 ___
 ### Detailed update plan
-**For now:**
-- Check current physics between several celestial bodies; fix if needed.
 
-**Near updates:**
+**Small updates:**
+- Print absolute v and a along with their coordinates.
 - Enable setting the objects during runtime.
+
+**Medium updates:**
 - Make GUI with text-style interface.
 - Load basic objects (like Earth, Moon, Sun, etc.).
 
 **Big updates:**
 - Make GUI with objects displayed.
 - Switch to more accurate physics.
+- Add 3D.
