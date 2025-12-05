@@ -126,6 +126,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="physics.cpp" />
     <ClCompile Include="simulation.cpp" />
+    <ClCompile Include="tests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="body.h" />
@@ -133,6 +134,7 @@
     <ClInclude Include="output.h" />
     <ClInclude Include="physics.h" />
     <ClInclude Include="simulation.h" />
+    <ClInclude Include="tests.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
