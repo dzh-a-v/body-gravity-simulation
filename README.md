@@ -30,11 +30,7 @@ r_new = r + v_new * dt.
 Note: While Euler integration is simple, it’s sufficient for this MVP. Future versions will use more stable methods (e.g., Velocity Verlet) for orbital motion.
 
 ## Future plans
-- Add support for initial velocity (to enable orbital trajectories),
-- Implement a graphical user interface (Qt),
-- Switch to more complex laws of physics,
-
-... and much more!
+[See here](https://github.com/users/dzh-a-v/projects/5)
 
 ___
 
@@ -64,25 +60,4 @@ r_new = r + v_new * dt.
 Замечание: метод Эйлера достаточен для MVP; в будущем он будет заменён более сложными моделями для орбитального движения.
 
 ## Планы
-В будущем планируется:
-- добавить поддержку задачи изначальной траектории движения (чтобы тело могло двигаться по орбите),
-- добавить графический интерфейс,
-- перейти на более сложную физику,
-
-и многое другое :)
-
-___
-### Detailed update plan
-
-**Small updates:**
-- Print absolute v and a along with their coordinates.
-- Enable setting the objects during runtime.
-
-**Medium updates:**
-- Make GUI with text-style interface.
-- Load basic objects (like Earth, Moon, Sun, etc.).
-
-**Big updates:**
-- Make GUI with objects displayed.
-- Switch to more accurate physics.
-- Add 3D.
+[См. здесь]
