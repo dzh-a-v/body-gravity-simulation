@@ -42,6 +42,7 @@ MainWindow::MainWindow(QWidget* parent)
     propertiesTable->horizontalHeader()->setStretchLastSection(true);
     propertiesTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     propertiesTable->setMinimumHeight(150);
+    propertiesTable->horizontalHeader()->setSectionsMovable(true);
 
     // --- UI: выбор тел ---
     body1Combo = new QComboBox(this);
