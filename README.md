@@ -3,7 +3,7 @@
 This program simulates gravitational interactions between bodies (originally intended for celestial objects, but any parameters can be used).
 
 ## Current state
-Currently, the program is console-only.
+Currently, the program is GUI console-style for 2D space only.
 
 Despite its simplicity, this program is more physically accurate than most online calculators, which typically assume constant surface gravity and ignore how gravity weakens with distance. It also calculates very
 small changes (like movements across the distance less than the size of protons) successfully.
@@ -39,8 +39,9 @@ ___
 Это программа для расчёта взаимодействий тел (по задумке -- космических, но можно задать любые параметры) через гравитацию.
 
 ## Текущее состояние программы
-Сейчас программа имеет только **консольный вид**. Программа считает передвижения аж меньше размера протона.
-Уже сейчас **эта программа считает правильнее онлайн-калькуляторов**, которые в большинстве своём делают расчёты только по гравитационной постоянной Земли / какой-л. другой планеты, 
+Сейчас программа имеет простой интерфейс консольного стиля для 2-мерного пространства.
+
+Уже сейчас эта программа считает правильнее онлайн-калькуляторов, которые в большинстве своём делают расчёты только по гравитационной постоянной Земли / какой-л. другой планеты, 
 не учитывая расстояние между объектами. 
 Так, при расчёте длительности падения объекта на высоте 1000 км от поверхности Земли другие программы показывают время в 450 секунд (примерно), 
 в то время как моя программа -- 510, т.к. на большом расстоянии на тело будет слабее действовать сила тяжести Земли и ускорение набираться будет медленнее.
