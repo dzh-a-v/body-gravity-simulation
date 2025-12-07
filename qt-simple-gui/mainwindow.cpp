@@ -12,8 +12,17 @@
 
 // Помощник: форматирование double в строку с научной нотацией
 QString formatDouble(double value) {
-    if (std::abs(value) < 1e-15) return "0";
-    return QString::number(value, 'e', 3);
+    if (value == 0.0) {
+        return "0";
+    }
+
+    std::stringstream ss;
+    ss << std::scientific << std::setprecision(6) << value;
+    std::string str = ss.str();
+
+    // Заменяем 'e' на 'e' (убираем лишний '+' перед экспонентой, если нужно)
+    // Qt принимает строку как есть
+    return QString::fromStdString(str);
 }
 
 QString formatVec2(const Vec2& v) {
