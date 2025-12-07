@@ -1,13 +1,17 @@
-﻿#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+﻿#pragma once
+
+#include "body.h"
+#include "simulation.h"
 
 #include <QMainWindow>
 #include <QTableWidget>
 #include <QTextEdit>
 #include <QSplitter>
 #include <QTimer>
+#include <QComboBox>
+#include <QLabel>
+#include <QSignalMapper>
 
-// Предварительное объявление класса Simulation (реализация в твоих файлах)
 class Simulation;
 
 class MainWindow : public QMainWindow
@@ -20,23 +24,28 @@ public:
 
 public slots:
     void onSimulationStep();
+    void updateDistance();
 
 private:
     void updatePropertiesTable(const Simulation& sim);
     void appendToLog(const QString& text);
+    QString formatDouble(double value);
+    QString formatVec2(const Vec2& v);
 
     // UI
-    QSplitter* splitter;
+    QSplitter* mainSplitter;        // Вертикальный: верх / низ
+    QSplitter* topSplitter;         // Горизонтальный: таблица / выбор
     QTableWidget* propertiesTable;
     QTextEdit* logView;
+    QComboBox* body1Combo;
+    QComboBox* body2Combo;
+    QLabel* distanceLabel;
 
     // Логика
     Simulation* sim;
     QTimer* timer;
     int stepCount;
     const int maxSteps = 5000;
-    double logInterval; // вывод лога каждые N секунд
+    double logInterval;
     double lastLogTime;
 };
-
-#endif // MAINWINDOW_H
