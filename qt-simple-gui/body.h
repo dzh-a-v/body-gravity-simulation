@@ -5,7 +5,7 @@ struct Vec2 {
     LD x = 0.0, y = 0.0;
     Vec2 operator+(Vec2 o) const { return { x + o.x, y + o.y }; }
     Vec2 operator-(Vec2 o) const { return { x - o.x, y - o.y }; }
-    Vec2 operator*(double s) const { return { x * s, y * s }; }
+    Vec2 operator*(LD s) const { return { x * s, y * s }; }
     LD norm() const { return std::sqrt(x * x + y * y); }
 };
 

@@ -10,3 +10,4 @@
 #endif
 
 #define LD long double
+#define MIN_NUMBER 1e-25
