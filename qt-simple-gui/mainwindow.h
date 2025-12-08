@@ -46,6 +46,6 @@ private:
     QTimer* timer;
     int stepCount;
     const int maxSteps = 5000;
-    double logInterval;
-    double lastLogTime;
+    LD logInterval;
+    LD lastLogTime;
 };

@@ -98,9 +98,7 @@
     <ClCompile Include="tests.cpp" />
     <QtRcc Include="qtsimplegui.qrc" />
     <QtUic Include="qtsimplegui.ui" />
-    <QtMoc Include="qtsimplegui.h" />
     <ClCompile Include="physics.cpp" />
-    <ClCompile Include="qtsimplegui.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>

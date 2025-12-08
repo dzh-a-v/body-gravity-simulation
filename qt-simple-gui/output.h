@@ -13,8 +13,8 @@ public:
         std::cout << "t = " << sim.time << " s\n";
         for (size_t i = 0; i < sim.bodies.size(); ++i) {
             const auto& b = sim.bodies[i];
-            double speed = sqrt(pow(b.velocity.x, 2) + pow(b.velocity.y, 2));
-            double acc = sqrt(pow(b.acceleration.x, 2) + pow(b.acceleration.y, 2));
+            LD speed = sqrt(pow(b.velocity.x, 2) + pow(b.velocity.y, 2));
+            LD acc = sqrt(pow(b.acceleration.x, 2) + pow(b.acceleration.y, 2));
             std::cout << "  [" << i << "] "
                 << "pos=(" << b.position.x << ", " << b.position.y << ") "
                 << "vel=(" << b.velocity.x << ", " << b.velocity.y << ") "

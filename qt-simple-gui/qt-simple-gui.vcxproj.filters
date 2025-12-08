@@ -29,12 +29,6 @@
     <QtUic Include="qtsimplegui.ui">
       <Filter>Form Files</Filter>
     </QtUic>
-    <QtMoc Include="qtsimplegui.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <ClCompile Include="qtsimplegui.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">

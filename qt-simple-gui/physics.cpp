@@ -19,7 +19,7 @@ void Physics::computeAccelerations(Simulation& sim) {
             Body& target = sim.bodies[i];
 
             Vec2 r_vec = source.position - target.position;
-            double r = r_vec.norm();
+            LD r = r_vec.norm();
 
             // Защита от деления на ноль
             if (r < 1e-6) continue;

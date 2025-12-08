@@ -1,5 +1,6 @@
 ﻿#include "mainwindow.h"
 #include "simulation.h"
+#include "helpers.h"
 
 #include <QApplication>
 #include <QFont>
@@ -164,9 +165,9 @@ void MainWindow::updateDistance() {
 
     const auto& b1 = sim->bodies[id1];
     const auto& b2 = sim->bodies[id2];
-    double dx = b1.position.x - b2.position.x;
-    double dy = b1.position.y - b2.position.y;
-    double dist = std::sqrt(dx * dx + dy * dy);
+    LD dx = b1.position.x - b2.position.x;
+    LD dy = b1.position.y - b2.position.y;
+    LD dist = std::sqrt(dx * dx + dy * dy);
 
     distanceLabel->setText(QString("Distance: %1 m").arg(formatDouble(dist)));
 }

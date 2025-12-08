@@ -5,8 +5,8 @@
 class Simulation {
 public:
     std::vector<Body> bodies;
-    LL double time = 0.0;
-    LL double dt = 1.0; // seconds
+    LD time = 0.0;
+    LD dt = 1.0; // seconds
 
     void addBody(const Body& body) {
         bodies.push_back(body);
