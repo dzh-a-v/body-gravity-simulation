@@ -10,7 +10,7 @@
 #include <iomanip>
 #include <cmath>
 
-// === Вспомогательные функции форматирования ===
+// === Format helpers ===
 
 QString MainWindow::formatDouble(double value) {
     if (value == 0.0) {
@@ -27,7 +27,7 @@ QString MainWindow::formatVec2(const Vec2& v) {
         .arg(formatDouble(v.y));
 }
 
-// === Конструктор ===
+// === Constructor ===
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent)
@@ -36,7 +36,7 @@ MainWindow::MainWindow(QWidget* parent)
     , logInterval(100.0)
     , lastLogTime(-logInterval)
 {
-    // --- UI: таблица ---
+    // --- UI: table ---
     propertiesTable = new QTableWidget(this);
     propertiesTable->setColumnCount(5);
     propertiesTable->setHorizontalHeaderLabels({ "ID", "Mass", "Position", "Velocity", "Acceleration" });
@@ -45,7 +45,7 @@ MainWindow::MainWindow(QWidget* parent)
     propertiesTable->setMinimumHeight(150);
     propertiesTable->horizontalHeader()->setSectionsMovable(true);
 
-    // --- UI: выбор тел ---
+    // --- UI: bodies choice ---
     body1Combo = new QComboBox(this);
     body2Combo = new QComboBox(this);
     distanceLabel = new QLabel("Distance: —", this);
@@ -57,7 +57,7 @@ MainWindow::MainWindow(QWidget* parent)
     connect(body2Combo, QOverload<int>::of(&QComboBox::activated),
         this, &MainWindow::updateDistance);
 
-    // --- Верхний сплиттер (таблица + выбор) ---
+    // --- Horizontal splitter on the top ---
     topSplitter = new QSplitter(Qt::Horizontal, this);
     topSplitter->addWidget(propertiesTable);
     topSplitter->addWidget(new QLabel("Body 1:", this));
@@ -67,13 +67,13 @@ MainWindow::MainWindow(QWidget* parent)
     topSplitter->addWidget(distanceLabel);
     topSplitter->setSizes({ 400, 50, 80, 50, 80, 200 });
 
-    // --- Лог ---
+    // --- Log ---
     logView = new QTextEdit(this);
     logView->setReadOnly(true);
     logView->setFont(QFont("Courier New", 10));
     logView->append("🌌 Gravity Simulator Log\n");
 
-    // --- Основной сплиттер (верх / низ) ---
+    // --- Main vertical splitter ---
     mainSplitter = new QSplitter(Qt::Vertical, this);
     mainSplitter->addWidget(topSplitter);
     mainSplitter->addWidget(logView);
@@ -83,18 +83,17 @@ MainWindow::MainWindow(QWidget* parent)
     resize(1400, 600);
     setWindowTitle("Gravity Simulator — Text UI");
 
-    // --- Инициализация симуляции ---
+    // --- Simulation initialization ---
     sim->addBody(Body(5.97e24, 6.37e6, { 0, 0 }, { 0, 0 }));
     sim->addBody(Body(1000, 1, { 7.37e6, 0 }, { 0, 7500 }));
     sim->addBody(Body(1, 1, { 7e7, 0 }, { 0, 10000 }));
     sim->dt = 10.0;
 
-    // --- Таймер ---
+    // --- Timer connected with simulation ---
     timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &MainWindow::onSimulationStep);
     timer->start(50);
 
-    // Первое обновление
     updatePropertiesTable(*sim);
 }
 
@@ -172,8 +171,6 @@ void MainWindow::updateDistance() {
     distanceLabel->setText(QString("Distance: %1 m").arg(formatDouble(dist)));
 }
 
-// === Шаг симуляции ===
-
 void MainWindow::onSimulationStep() {
     if (stepCount >= maxSteps) {
         timer->stop();
@@ -201,8 +198,6 @@ void MainWindow::onSimulationStep() {
         appendToLog("-----");
     }
 }
-
-// === Добавление в лог с автопрокруткой ===
 
 void MainWindow::appendToLog(const QString& text) {
     logView->append(text);

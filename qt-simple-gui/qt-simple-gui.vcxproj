@@ -95,7 +95,6 @@
   <ItemGroup>
     <ClCompile Include="mainwindow.cpp" />
     <ClCompile Include="simulation.cpp" />
-    <ClCompile Include="tests.cpp" />
     <QtRcc Include="qtsimplegui.qrc" />
     <QtUic Include="qtsimplegui.ui" />
     <ClCompile Include="physics.cpp" />
@@ -105,7 +104,6 @@
     <ClInclude Include="body.h" />
     <ClInclude Include="helpers.h" />
     <QtMoc Include="mainwindow.h" />
-    <ClInclude Include="output.h" />
     <ClInclude Include="physics.h" />
     <ClInclude Include="simulation.h" />
     <ClInclude Include="tests.h" />

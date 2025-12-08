@@ -33,15 +33,15 @@ private:
     QString formatVec2(const Vec2& v);
 
     // UI
-    QSplitter* mainSplitter;        // Вертикальный: верх / низ
-    QSplitter* topSplitter;         // Горизонтальный: таблица / выбор
+    QSplitter* mainSplitter;        // Vertical
+    QSplitter* topSplitter;         // Horizontal
     QTableWidget* propertiesTable;
     QTextEdit* logView;
     QComboBox* body1Combo;
     QComboBox* body2Combo;
     QLabel* distanceLabel;
 
-    // Логика
+    // Logic
     Simulation* sim;
     QTimer* timer;
     int stepCount;

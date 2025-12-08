@@ -5,15 +5,12 @@
 class Simulation {
 public:
     std::vector<Body> bodies;
-    LD time = 0.0;
-    LD dt = 1.0; // seconds
+    LD time = 0.0; // total time (s)
+    LD dt = 1.0; // step (s)
 
     void addBody(const Body& body) {
         bodies.push_back(body);
     }
-
-    bool hasCollision() const;
-    bool isFinished = false;
 
     void step();
 };
