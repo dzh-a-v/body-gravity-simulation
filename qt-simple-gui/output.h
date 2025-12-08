@@ -21,7 +21,6 @@ public:
                 << "acc=(" << b.acceleration.x << ", " << b.acceleration.y << ") "
                 << "|v|=" << speed << ", "
                 << "|a|=" << acc << std::endl;
-
         }
         std::cout << "---\n";
     }

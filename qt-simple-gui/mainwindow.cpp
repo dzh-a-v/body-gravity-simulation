@@ -80,7 +80,7 @@ MainWindow::MainWindow(QWidget* parent)
     mainSplitter->setSizes({ 250, 350 });
 
     setCentralWidget(mainSplitter);
-    resize(1000, 600);
+    resize(1400, 600);
     setWindowTitle("Gravity Simulator — Text UI");
 
     // --- Инициализация симуляции ---
@@ -190,14 +190,15 @@ void MainWindow::onSimulationStep() {
         appendToLog(QString("t = %1 s").arg(sim->time, 0, 'f', 1));
         for (size_t i = 0; i < sim->bodies.size(); ++i) {
             const auto& b = sim->bodies[i];
-            appendToLog(QString("  [%1] pos=%2 vel=%3 acc=%4")
+            appendToLog(QString("  [%1] pos=%2, vel=%3, acc=%4, |v|=%5, |a|=%6")
                 .arg(static_cast<int>(i))
                 .arg(formatVec2(b.position))
                 .arg(formatVec2(b.velocity))
-                .arg(formatVec2(b.acceleration)));
+                .arg(formatVec2(b.acceleration))
+                .arg(sqrt(b.velocity.x * b.velocity.x + b.velocity.y * b.velocity.y))
+                .arg(sqrt(b.acceleration.x * b.acceleration.x + b.acceleration.y * b.acceleration.y)));
         }
-        appendToLog(QString("DEBUG: bodies count = %1").arg(sim->bodies.size()));
-        appendToLog("---");
+        appendToLog("-----");
     }
 }
 
