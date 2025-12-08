@@ -1,5 +1,6 @@
 ﻿#include "mainwindow.h"
 #include "simulation.h"
+#include "helpers.h"
 
 #include <QApplication>
 #include <QFont>
@@ -9,7 +10,7 @@
 #include <iomanip>
 #include <cmath>
 
-// === Вспомогательные функции форматирования ===
+// === Format helpers ===
 
 QString MainWindow::formatDouble(double value) {
     if (value == 0.0) {
@@ -26,7 +27,7 @@ QString MainWindow::formatVec2(const Vec2& v) {
         .arg(formatDouble(v.y));
 }
 
-// === Конструктор ===
+// === Constructor ===
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent)
@@ -35,7 +36,7 @@ MainWindow::MainWindow(QWidget* parent)
     , logInterval(100.0)
     , lastLogTime(-logInterval)
 {
-    // --- UI: таблица ---
+    // --- UI: table ---
     propertiesTable = new QTableWidget(this);
     propertiesTable->setColumnCount(5);
     propertiesTable->setHorizontalHeaderLabels({ "ID", "Mass", "Position", "Velocity", "Acceleration" });
@@ -44,7 +45,7 @@ MainWindow::MainWindow(QWidget* parent)
     propertiesTable->setMinimumHeight(150);
     propertiesTable->horizontalHeader()->setSectionsMovable(true);
 
-    // --- UI: выбор тел ---
+    // --- UI: bodies choice ---
     body1Combo = new QComboBox(this);
     body2Combo = new QComboBox(this);
     distanceLabel = new QLabel("Distance: —", this);
@@ -56,7 +57,7 @@ MainWindow::MainWindow(QWidget* parent)
     connect(body2Combo, QOverload<int>::of(&QComboBox::activated),
         this, &MainWindow::updateDistance);
 
-    // --- Верхний сплиттер (таблица + выбор) ---
+    // --- Horizontal splitter on the top ---
     topSplitter = new QSplitter(Qt::Horizontal, this);
     topSplitter->addWidget(propertiesTable);
     topSplitter->addWidget(new QLabel("Body 1:", this));
@@ -66,34 +67,33 @@ MainWindow::MainWindow(QWidget* parent)
     topSplitter->addWidget(distanceLabel);
     topSplitter->setSizes({ 400, 50, 80, 50, 80, 200 });
 
-    // --- Лог ---
+    // --- Log ---
     logView = new QTextEdit(this);
     logView->setReadOnly(true);
     logView->setFont(QFont("Courier New", 10));
     logView->append("🌌 Gravity Simulator Log\n");
 
-    // --- Основной сплиттер (верх / низ) ---
+    // --- Main vertical splitter ---
     mainSplitter = new QSplitter(Qt::Vertical, this);
     mainSplitter->addWidget(topSplitter);
     mainSplitter->addWidget(logView);
     mainSplitter->setSizes({ 250, 350 });
 
     setCentralWidget(mainSplitter);
-    resize(1000, 600);
+    resize(1400, 600);
     setWindowTitle("Gravity Simulator — Text UI");
 
-    // --- Инициализация симуляции ---
+    // --- Simulation initialization ---
     sim->addBody(Body(5.97e24, 6.37e6, { 0, 0 }, { 0, 0 }));
     sim->addBody(Body(1000, 1, { 7.37e6, 0 }, { 0, 7500 }));
     sim->addBody(Body(1, 1, { 7e7, 0 }, { 0, 10000 }));
     sim->dt = 10.0;
 
-    // --- Таймер ---
+    // --- Timer connected with simulation ---
     timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &MainWindow::onSimulationStep);
     timer->start(50);
 
-    // Первое обновление
     updatePropertiesTable(*sim);
 }
 
@@ -164,14 +164,12 @@ void MainWindow::updateDistance() {
 
     const auto& b1 = sim->bodies[id1];
     const auto& b2 = sim->bodies[id2];
-    double dx = b1.position.x - b2.position.x;
-    double dy = b1.position.y - b2.position.y;
-    double dist = std::sqrt(dx * dx + dy * dy);
+    LD dx = b1.position.x - b2.position.x;
+    LD dy = b1.position.y - b2.position.y;
+    LD dist = std::sqrt(dx * dx + dy * dy);
 
     distanceLabel->setText(QString("Distance: %1 m").arg(formatDouble(dist)));
 }
-
-// === Шаг симуляции ===
 
 void MainWindow::onSimulationStep() {
     if (stepCount >= maxSteps) {
@@ -189,18 +187,17 @@ void MainWindow::onSimulationStep() {
         appendToLog(QString("t = %1 s").arg(sim->time, 0, 'f', 1));
         for (size_t i = 0; i < sim->bodies.size(); ++i) {
             const auto& b = sim->bodies[i];
-            appendToLog(QString("  [%1] pos=%2 vel=%3 acc=%4")
+            appendToLog(QString("  [%1] pos=%2, vel=%3, acc=%4, |v|=%5, |a|=%6")
                 .arg(static_cast<int>(i))
                 .arg(formatVec2(b.position))
                 .arg(formatVec2(b.velocity))
-                .arg(formatVec2(b.acceleration)));
+                .arg(formatVec2(b.acceleration))
+                .arg(sqrt(b.velocity.x * b.velocity.x + b.velocity.y * b.velocity.y))
+                .arg(sqrt(b.acceleration.x * b.acceleration.x + b.acceleration.y * b.acceleration.y)));
         }
-        appendToLog(QString("DEBUG: bodies count = %1").arg(sim->bodies.size()));
-        appendToLog("---");
+        appendToLog("-----");
     }
 }
-
-// === Добавление в лог с автопрокруткой ===
 
 void MainWindow::appendToLog(const QString& text) {
     logView->append(text);

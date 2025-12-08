@@ -6,13 +6,13 @@ void Tests::test_equilateral_triangle() {
     Simulation sim;
     sim.dt = 1000.0;
 
-    double M = 1e10;
-    double R = 10000.0; // расстояние от центра до вершины
+    LD M = 1e10;
+    LD R = 10000.0; // расстояние от центра до вершины
 
     // Углы треугольника
-    double a1 = 0;
-    double a2 = 2 * M_PI / 3;
-    double a3 = 4 * M_PI / 3;
+    LD a1 = 0;
+    LD a2 = 2 * M_PI / 3;
+    LD a3 = 4 * M_PI / 3;
 
     sim.addBody(Body(M, 10, { R * cos(a1), R * sin(a1) }, { 0, 0 }));
     sim.addBody(Body(M, 10, { R * cos(a2), R * sin(a2) }, { 0, 0 }));

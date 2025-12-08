@@ -95,19 +95,15 @@
   <ItemGroup>
     <ClCompile Include="mainwindow.cpp" />
     <ClCompile Include="simulation.cpp" />
-    <ClCompile Include="tests.cpp" />
     <QtRcc Include="qtsimplegui.qrc" />
     <QtUic Include="qtsimplegui.ui" />
-    <QtMoc Include="qtsimplegui.h" />
     <ClCompile Include="physics.cpp" />
-    <ClCompile Include="qtsimplegui.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="body.h" />
     <ClInclude Include="helpers.h" />
     <QtMoc Include="mainwindow.h" />
-    <ClInclude Include="output.h" />
     <ClInclude Include="physics.h" />
     <ClInclude Include="simulation.h" />
     <ClInclude Include="tests.h" />
