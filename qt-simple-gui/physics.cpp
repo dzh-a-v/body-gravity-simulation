@@ -1,6 +1,7 @@
 ﻿#include "physics.h"
 #include "simulation.h"
 #include "helpers.h"
+#include <cmath>
 
 void Physics::computeAccelerations(Simulation& sim) {
     size_t n = sim.bodies.size();
@@ -31,4 +32,9 @@ void Physics::computeAccelerations(Simulation& sim) {
             target.acceleration = target.acceleration + r_vec * (G * source.mass / (r * r * r));
         }
     }
+}
+
+LD Physics::calculateDistance(const Body& a, const Body& b) {
+    Vec2 diff = a.position - b.position;
+    return diff.norm();
 }

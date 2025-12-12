@@ -1,5 +1,6 @@
 #pragma once
 #include "helpers.h"
+#include <QString>
 
 struct Vec2 {
     LD x = 0.0, y = 0.0;
@@ -7,6 +8,9 @@ struct Vec2 {
     Vec2 operator-(Vec2 o) const { return { x - o.x, y - o.y }; }
     Vec2 operator*(LD s) const { return { x * s, y * s }; }
     LD norm() const { return std::sqrt(x * x + y * y); }
+    QString toString() const {
+        return QString("(%1, %2)").arg(x, 0, 'e', 6).arg(y, 0, 'e', 6);
+    }
 };
 
 class Body {
