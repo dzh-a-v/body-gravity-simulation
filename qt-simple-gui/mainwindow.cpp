@@ -167,16 +167,14 @@ MainWindow::MainWindow(QWidget* parent)
     speedSlider->setTickInterval(1);
     speedSlider->setSingleStep(1);
     speedSlider->setPageStep(1);
-    speedSlider->setFixedHeight(200); // фиксированная высота для предсказуемости
+    speedSlider->setFixedHeight(200);
 
-    // Создаём метки, выровненные по центру
     QLabel* label10 = new QLabel("10");
     QLabel* label50 = new QLabel("50");
     QLabel* label250 = new QLabel("250");
     QLabel* label500 = new QLabel("500");
     QLabel* label1000 = new QLabel("1000");
 
-    // Центрируем текст
     auto center = Qt::AlignHCenter | Qt::AlignVCenter;
     label10->setAlignment(center);
     label50->setAlignment(center);
@@ -184,7 +182,6 @@ MainWindow::MainWindow(QWidget* parent)
     label500->setAlignment(center);
     label1000->setAlignment(center);
 
-    // Спец-стайл для компактности
     QFont smallFont = font();
     smallFont.setPointSize(8);
     for (auto* lbl : { label10, label50, label250, label500, label1000 }) {
@@ -192,13 +189,11 @@ MainWindow::MainWindow(QWidget* parent)
         lbl->setFixedWidth(30);
     }
 
-    // Основной layout: метки СЛЕВА, слайдер СПРАВА
     QHBoxLayout* sliderLayout = new QHBoxLayout();
     sliderLayout->setSpacing(5);
 
-    // Вертикальный layout для меток
     QVBoxLayout* labelsLayout = new QVBoxLayout();
-    labelsLayout->setSpacing(38); // ≈ 200px / 4 интервала = 50px между центрами, но чуть меньше
+    labelsLayout->setSpacing(38);
     labelsLayout->addWidget(label10);
     labelsLayout->addWidget(label50);
     labelsLayout->addWidget(label250);
