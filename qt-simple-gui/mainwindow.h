@@ -10,7 +10,7 @@
 #include <QPushButton>
 #include <QLineEdit>
 #include <QStackedWidget>
-#include <QSlider>  // добавлено
+#include <QSlider>
 
 class Simulation;
 
