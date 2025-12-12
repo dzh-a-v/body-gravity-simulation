@@ -48,6 +48,7 @@ MainWindow::MainWindow(QWidget* parent)
     setupLayout->addWidget(new QLabel("Bodies:"));
     bodiesTable = new QTableWidget(0, 6);
     bodiesTable->setHorizontalHeaderLabels({ "Mass", "Radius", "X", "Y", "VX", "VY" });
+    bodiesTable->setEditTriggers(QAbstractItemView::DoubleClicked | QAbstractItemView::EditKeyPressed); // ✅
     setupLayout->addWidget(bodiesTable);
 
     QPushButton* addBodyBtn = new QPushButton("Add Body");
@@ -116,12 +117,26 @@ MainWindow::MainWindow(QWidget* parent)
     mainSplitter->addWidget(logView);
     mainSplitter->setSizes({ 350, 250 });
 
+    // --- Control Buttons ---
     pauseButton = new QPushButton("⏸ Pause");
-    pauseButton->setMinimumWidth(100);
+    restartButton = new QPushButton("🔁 Restart Setup");
+    restartButton->setEnabled(false); // изначально недоступна
+
     connect(pauseButton, &QPushButton::clicked, this, &MainWindow::togglePause);
+    connect(restartButton, &QPushButton::clicked, this, [this]() {
+        stack->setCurrentWidget(setupPage);
+        setWindowTitle("Gravity Simulator — Setup");
+        restartButton->setEnabled(false);
+        pauseButton->setEnabled(true);
+        isRunning = false;
+        });
+
+    QHBoxLayout* controlLayout = new QHBoxLayout();
+    controlLayout->addWidget(pauseButton);
+    controlLayout->addWidget(restartButton);
 
     QVBoxLayout* simLayout = new QVBoxLayout(simPage);
-    simLayout->addWidget(pauseButton);
+    simLayout->addLayout(controlLayout);
     simLayout->addWidget(mainSplitter);
 
     // --- Main Stack ---
@@ -194,6 +209,8 @@ void MainWindow::startSimulation() {
     stepCount = 0;
     lastLogTime = -logInterval;
     isRunning = true;
+    pauseButton->setText("⏹ Stop");
+    restartButton->setEnabled(false);
     timer->start(50);
 }
 
@@ -201,11 +218,13 @@ void MainWindow::togglePause() {
     if (isRunning) {
         timer->stop();
         pauseButton->setText("▶ Resume");
+        restartButton->setEnabled(true);
         isRunning = false;
     }
     else {
         timer->start(50);
-        pauseButton->setText("⏸ Pause");
+        pauseButton->setText("⏹ Stop");
+        restartButton->setEnabled(false);
         isRunning = true;
     }
     pauseButton->setStyleSheet(isRunning ? "background-color: #ffebee;" : "background-color: #e8f5e9;");
@@ -218,9 +237,9 @@ void MainWindow::updatePropertiesTable(const Simulation& sim) {
         int row = static_cast<int>(i);
         propertiesTable->setItem(row, 0, new QTableWidgetItem(QString::number(i)));
         propertiesTable->setItem(row, 1, new QTableWidgetItem(formatDouble(b.mass)));
-        propertiesTable->setItem(row, 2, new QTableWidgetItem(b.position.toString()));     // ✅
-        propertiesTable->setItem(row, 3, new QTableWidgetItem(b.velocity.toString()));    // ✅
-        propertiesTable->setItem(row, 4, new QTableWidgetItem(b.acceleration.toString())); // ✅
+        propertiesTable->setItem(row, 2, new QTableWidgetItem(b.position.toString()));
+        propertiesTable->setItem(row, 3, new QTableWidgetItem(b.velocity.toString()));
+        propertiesTable->setItem(row, 4, new QTableWidgetItem(b.acceleration.toString()));
     }
 
     int prev1 = body1Combo->currentIndex();
@@ -264,6 +283,9 @@ void MainWindow::updateDistance() {
 void MainWindow::onSimulationStep() {
     if (stepCount >= maxSteps) {
         timer->stop();
+        pauseButton->setText("▶ Resume");
+        restartButton->setEnabled(true);
+        isRunning = false;
         appendToLog("⏹ Simulation finished (max steps reached).");
         return;
     }
@@ -280,9 +302,9 @@ void MainWindow::onSimulationStep() {
             double acc = std::sqrt(b.acceleration.x * b.acceleration.x + b.acceleration.y * b.acceleration.y);
             appendToLog(QString("  [%1] pos=%2, vel=%3, acc=%4, |v|=%5, |a|=%6")
                 .arg(static_cast<int>(i))
-                .arg(b.position.toString())        // ✅
-                .arg(b.velocity.toString())        // ✅
-                .arg(b.acceleration.toString())    // ✅
+                .arg(b.position.toString())
+                .arg(b.velocity.toString())
+                .arg(b.acceleration.toString())
                 .arg(formatDouble(speed))
                 .arg(formatDouble(acc)));
         }

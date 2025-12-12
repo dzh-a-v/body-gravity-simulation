@@ -1,7 +1,5 @@
-﻿#pragma once
-
-#include "simulation.h"
-#include "body.h"
+﻿#ifndef MAINWINDOW_H
+#define MAINWINDOW_H
 
 #include <QMainWindow>
 #include <QTableWidget>
@@ -36,8 +34,6 @@ private:
     void updatePropertiesTable(const Simulation& sim);
     void appendToLog(const QString& text);
     QString formatDouble(double value);
-    QString formatVec2(const Vec2& v);
-    void setBodyRow(int row, double mass, double rad, double x, double y, double vx, double vy);
 
     // UI Pages
     QStackedWidget* stack;
@@ -47,7 +43,6 @@ private:
     // Setup Page UI
     QLineEdit* dtEdit;
     QLineEdit* maxStepsEdit;
-    QTableWidget* bodiesTable;
     QPushButton* startButton;
 
     // Simulation Page UI
@@ -59,6 +54,7 @@ private:
     QComboBox* body2Combo;
     QLabel* distanceLabel;
     QPushButton* pauseButton;
+    QPushButton* restartButton;
 
     // Logic
     Simulation* sim;
@@ -68,4 +64,9 @@ private:
     double logInterval;
     double lastLogTime;
     bool isRunning;
+
+    QTableWidget* bodiesTable;
+    void setBodyRow(int row, double mass, double rad, double x, double y, double vx, double vy);
 };
+
+#endif // MAINWINDOW_H
