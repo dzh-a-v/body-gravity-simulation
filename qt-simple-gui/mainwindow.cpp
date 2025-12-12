@@ -12,6 +12,10 @@
 #include <QPushButton>
 #include <QLineEdit>
 #include <QStackedWidget>
+#include <QSlider>
+#include <QGroupBox>
+#include <QSet>
+#include <algorithm>
 #include <sstream>
 #include <iomanip>
 #include <cmath>
@@ -22,6 +26,46 @@ QString MainWindow::formatDouble(double value) {
     std::stringstream ss;
     ss << std::scientific << std::setprecision(6) << value;
     return QString::fromStdString(ss.str());
+}
+
+// Helper: map slider position to real time (ms)
+int MainWindow::sliderPosToInterval(int pos) {
+    static const int steps[] = { 1000, 500, 250, 50, 10 };
+    if (pos < 0) pos = 0;
+    if (pos > 4) pos = 4;
+    return steps[pos];
+}
+
+// Helper: reverse mapping (for initialization)
+int MainWindow::intervalToSliderPos(int interval) {
+    static const int steps[] = { 1000, 500, 250, 50, 10 };
+    for (int i = 0; i < 5; ++i) {
+        if (interval == steps[i]) return i;
+    }
+    return 1; // default to 50
+}
+
+void MainWindow::removeSelectedBody() {
+    if (bodiesTable->rowCount() <= 1) {
+        return;
+    }
+
+    QList<QTableWidgetItem*> selected = bodiesTable->selectedItems();
+    if (selected.isEmpty()) {
+        return;
+    }
+
+    QSet<int> rowsToRemove;
+    for (auto* item : selected) {
+        rowsToRemove.insert(item->row());
+    }
+
+    QList<int> sortedRows = rowsToRemove.values();
+    std::sort(sortedRows.begin(), sortedRows.end(), std::greater<int>());
+
+    for (int row : sortedRows) {
+        bodiesTable->removeRow(row);
+    }
 }
 
 MainWindow::MainWindow(QWidget* parent)
@@ -48,19 +92,22 @@ MainWindow::MainWindow(QWidget* parent)
     setupLayout->addWidget(new QLabel("Bodies:"));
     bodiesTable = new QTableWidget(0, 6);
     bodiesTable->setHorizontalHeaderLabels({ "Mass", "Radius", "X", "Y", "VX", "VY" });
-    bodiesTable->setEditTriggers(QAbstractItemView::DoubleClicked | QAbstractItemView::EditKeyPressed); // ✅
+    bodiesTable->setEditTriggers(QAbstractItemView::DoubleClicked | QAbstractItemView::EditKeyPressed);
     setupLayout->addWidget(bodiesTable);
 
     QPushButton* addBodyBtn = new QPushButton("Add Body");
     QPushButton* resetBtn = new QPushButton("Reset to Default");
     startButton = new QPushButton("▶ Start Simulation");
+    QPushButton* removeBodyBtn = new QPushButton("Remove Selected");
 
     connect(addBodyBtn, &QPushButton::clicked, this, &MainWindow::addBodyRow);
     connect(resetBtn, &QPushButton::clicked, this, &MainWindow::resetToDefault);
     connect(startButton, &QPushButton::clicked, this, &MainWindow::startSimulation);
+    connect(removeBodyBtn, &QPushButton::clicked, this, &MainWindow::removeSelectedBody);
 
     QHBoxLayout* btnLayout = new QHBoxLayout();
     btnLayout->addWidget(addBodyBtn);
+    btnLayout->addWidget(removeBodyBtn);
     btnLayout->addWidget(resetBtn);
     btnLayout->addWidget(startButton);
     setupLayout->addLayout(btnLayout);
@@ -112,22 +159,95 @@ MainWindow::MainWindow(QWidget* parent)
     logView->setFont(QFont("Courier New", 10));
     logView->append("🌌 Gravity Simulator Log\n");
 
+    // --- Speed Slider with aligned labels ---
+    QGroupBox* sliderBox = new QGroupBox("Speed");
+    speedSlider = new QSlider(Qt::Vertical);
+    speedSlider->setRange(0, 4);
+    speedSlider->setTickPosition(QSlider::TicksBothSides);
+    speedSlider->setTickInterval(1);
+    speedSlider->setSingleStep(1);
+    speedSlider->setPageStep(1);
+    speedSlider->setFixedHeight(200); // фиксированная высота для предсказуемости
+
+    // Создаём метки, выровненные по центру
+    QLabel* label10 = new QLabel("10");
+    QLabel* label50 = new QLabel("50");
+    QLabel* label250 = new QLabel("250");
+    QLabel* label500 = new QLabel("500");
+    QLabel* label1000 = new QLabel("1000");
+
+    // Центрируем текст
+    auto center = Qt::AlignHCenter | Qt::AlignVCenter;
+    label10->setAlignment(center);
+    label50->setAlignment(center);
+    label250->setAlignment(center);
+    label500->setAlignment(center);
+    label1000->setAlignment(center);
+
+    // Спец-стайл для компактности
+    QFont smallFont = font();
+    smallFont.setPointSize(8);
+    for (auto* lbl : { label10, label50, label250, label500, label1000 }) {
+        lbl->setFont(smallFont);
+        lbl->setFixedWidth(30);
+    }
+
+    // Основной layout: метки СЛЕВА, слайдер СПРАВА
+    QHBoxLayout* sliderLayout = new QHBoxLayout();
+    sliderLayout->setSpacing(5);
+
+    // Вертикальный layout для меток
+    QVBoxLayout* labelsLayout = new QVBoxLayout();
+    labelsLayout->setSpacing(38); // ≈ 200px / 4 интервала = 50px между центрами, но чуть меньше
+    labelsLayout->addWidget(label10);
+    labelsLayout->addWidget(label50);
+    labelsLayout->addWidget(label250);
+    labelsLayout->addWidget(label500);
+    labelsLayout->addWidget(label1000);
+    labelsLayout->setContentsMargins(0, 0, 0, 0);
+
+    sliderLayout->addLayout(labelsLayout);
+    sliderLayout->addWidget(speedSlider);
+    sliderLayout->setContentsMargins(5, 5, 5, 5);
+
+    sliderBox->setLayout(sliderLayout);
+    sliderBox->setMaximumWidth(80);
+
+    // Set default
+    speedSlider->setValue(intervalToSliderPos(50));
+
+    // Connect slider
+    connect(speedSlider, &QSlider::valueChanged, this, [this](int pos) {
+        int interval = sliderPosToInterval(pos);
+        if (isRunning) {
+            timer->start(interval);
+        }
+        });
+
+    // --- Combine log and slider horizontally (same height) ---
+    QHBoxLayout* logAndSliderLayout = new QHBoxLayout();
+    logAndSliderLayout->addWidget(logView);
+    logAndSliderLayout->addWidget(sliderBox);
+
+    QWidget* logAndSliderWidget = new QWidget();
+    logAndSliderWidget->setLayout(logAndSliderLayout);
+
+    // --- Main vertical splitter: tables on top, log+slider below ---
     mainSplitter = new QSplitter(Qt::Vertical);
     mainSplitter->addWidget(topSplitter);
-    mainSplitter->addWidget(logView);
+    mainSplitter->addWidget(logAndSliderWidget);
     mainSplitter->setSizes({ 350, 250 });
 
     // --- Control Buttons ---
-    pauseButton = new QPushButton("⏸ Pause");
+    pauseButton = new QPushButton("⏹ Stop");
     restartButton = new QPushButton("🔁 Restart Setup");
-    restartButton->setEnabled(false); // изначально недоступна
+    restartButton->setEnabled(false);
 
     connect(pauseButton, &QPushButton::clicked, this, &MainWindow::togglePause);
     connect(restartButton, &QPushButton::clicked, this, [this]() {
         stack->setCurrentWidget(setupPage);
         setWindowTitle("Gravity Simulator — Setup");
         restartButton->setEnabled(false);
-        pauseButton->setEnabled(true);
         isRunning = false;
         });
 
@@ -135,6 +255,7 @@ MainWindow::MainWindow(QWidget* parent)
     controlLayout->addWidget(pauseButton);
     controlLayout->addWidget(restartButton);
 
+    // --- Final sim page layout ---
     QVBoxLayout* simLayout = new QVBoxLayout(simPage);
     simLayout->addLayout(controlLayout);
     simLayout->addWidget(mainSplitter);
@@ -144,7 +265,7 @@ MainWindow::MainWindow(QWidget* parent)
     stack->addWidget(setupPage);
     stack->addWidget(simPage);
     setCentralWidget(stack);
-    resize(1300, 700);
+    resize(1400, 700);
     setWindowTitle("Gravity Simulator — Setup");
 
     resetToDefault();
@@ -211,7 +332,7 @@ void MainWindow::startSimulation() {
     isRunning = true;
     pauseButton->setText("⏹ Stop");
     restartButton->setEnabled(false);
-    timer->start(50);
+    timer->start(sliderPosToInterval(speedSlider->value()));
 }
 
 void MainWindow::togglePause() {
@@ -222,7 +343,8 @@ void MainWindow::togglePause() {
         isRunning = false;
     }
     else {
-        timer->start(50);
+        int interval = sliderPosToInterval(speedSlider->value());
+        timer->start(interval);
         pauseButton->setText("⏹ Stop");
         restartButton->setEnabled(false);
         isRunning = true;

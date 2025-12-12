@@ -1,5 +1,4 @@
-﻿#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+﻿#pragma once
 
 #include <QMainWindow>
 #include <QTableWidget>
@@ -11,6 +10,7 @@
 #include <QPushButton>
 #include <QLineEdit>
 #include <QStackedWidget>
+#include <QSlider>  // добавлено
 
 class Simulation;
 
@@ -29,10 +29,13 @@ public slots:
     void startSimulation();
     void addBodyRow();
     void resetToDefault();
+    void removeSelectedBody();
 
 private:
     void updatePropertiesTable(const Simulation& sim);
     void appendToLog(const QString& text);
+    int intervalToSliderPos(int interval);
+    int sliderPosToInterval(int pos);
     QString formatDouble(double value);
 
     // UI Pages
@@ -55,6 +58,7 @@ private:
     QLabel* distanceLabel;
     QPushButton* pauseButton;
     QPushButton* restartButton;
+    QSlider* speedSlider;
 
     // Logic
     Simulation* sim;
@@ -68,5 +72,3 @@ private:
     QTableWidget* bodiesTable;
     void setBodyRow(int row, double mass, double rad, double x, double y, double vx, double vy);
 };
-
-#endif // MAINWINDOW_H
