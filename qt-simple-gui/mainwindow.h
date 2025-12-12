@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-#include "body.h"
 #include "simulation.h"
+#include "body.h"
 
 #include <QMainWindow>
 #include <QTableWidget>
@@ -10,8 +10,9 @@
 #include <QTimer>
 #include <QComboBox>
 #include <QLabel>
-#include <QSignalMapper>
 #include <QPushButton>
+#include <QLineEdit>
+#include <QStackedWidget>
 
 class Simulation;
 
@@ -27,29 +28,44 @@ public slots:
     void onSimulationStep();
     void updateDistance();
     void togglePause();
+    void startSimulation();
+    void addBodyRow();
+    void resetToDefault();
 
 private:
     void updatePropertiesTable(const Simulation& sim);
     void appendToLog(const QString& text);
     QString formatDouble(double value);
     QString formatVec2(const Vec2& v);
+    void setBodyRow(int row, double mass, double rad, double x, double y, double vx, double vy);
 
-    // UI
-    QSplitter* mainSplitter;        // Vertical
-    QSplitter* topSplitter;         // Horizontal
+    // UI Pages
+    QStackedWidget* stack;
+    QWidget* setupPage;
+    QWidget* simPage;
+
+    // Setup Page UI
+    QLineEdit* dtEdit;
+    QLineEdit* maxStepsEdit;
+    QTableWidget* bodiesTable;
+    QPushButton* startButton;
+
+    // Simulation Page UI
+    QSplitter* mainSplitter;
+    QSplitter* topSplitter;
     QTableWidget* propertiesTable;
     QTextEdit* logView;
     QComboBox* body1Combo;
     QComboBox* body2Combo;
     QLabel* distanceLabel;
     QPushButton* pauseButton;
-    bool isRunning;
 
     // Logic
     Simulation* sim;
     QTimer* timer;
     int stepCount;
-    const int maxSteps = 5000;
-    LD logInterval;
-    LD lastLogTime;
+    int maxSteps;
+    double logInterval;
+    double lastLogTime;
+    bool isRunning;
 };
