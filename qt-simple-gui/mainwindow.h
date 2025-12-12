@@ -11,6 +11,7 @@
 #include <QComboBox>
 #include <QLabel>
 #include <QSignalMapper>
+#include <QPushButton>
 
 class Simulation;
 
@@ -25,6 +26,7 @@ public:
 public slots:
     void onSimulationStep();
     void updateDistance();
+    void togglePause();
 
 private:
     void updatePropertiesTable(const Simulation& sim);
@@ -40,6 +42,8 @@ private:
     QComboBox* body1Combo;
     QComboBox* body2Combo;
     QLabel* distanceLabel;
+    QPushButton* pauseButton;
+    bool isRunning;
 
     // Logic
     Simulation* sim;
