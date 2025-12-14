@@ -1,3 +1,6 @@
+# Note
+I'm resting. I will continue working on this project in January 2026 ;)
+
 # en
 ## Gravity-based N-Body Simulation (alpha)
 This program simulates gravitational interactions between bodies (originally intended for celestial objects, but any parameters can be used).
