@@ -62,3 +62,8 @@ r_new = r + v_new * dt.
 
 ## Планы
 [См. здесь](https://github.com/users/dzh-a-v/projects/5)
+
+# Space Guide
+
+Copyright © 2025 Arsen Dzhabrailov  
+Licensed under **GNU GPL v3.0** — see [LICENSE](LICENSE).
