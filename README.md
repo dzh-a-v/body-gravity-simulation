@@ -35,12 +35,14 @@ Note: it’s sufficient for this MVP. Future versions will use more stable metho
 ## Future plans
 [See here](https://github.com/users/dzh-a-v/projects/5) detailed plan.
 
+<!--
 Roadmap:
 <img width="1243" height="571" alt="image" src="https://github.com/user-attachments/assets/8aca740c-838f-4aef-97f5-862ade6191da" />
+-->
 
 ## License
 
-Copyright © 2025 Arsen Dzhabrailov  
+Copyright © 2025 Arsen Dzhabrailov (dzh-a-v)
 Licensed under **GNU GPL v3.0** — see [LICENSE](LICENSE).
 ___
 
@@ -73,10 +75,12 @@ r_new = r + v_new * dt.
 ## Планы
 [См. здесь](https://github.com/users/dzh-a-v/projects/5) детальный план.
 
+<!--
 Дорожная карта:
 <img width="1243" height="571" alt="image" src="https://github.com/user-attachments/assets/8aca740c-838f-4aef-97f5-862ade6191da" />
+-->
 
 ## Лицензия
 
-Copyright © 2025 Arsen Dzhabrailov  
+Copyright © 2025 Arsen Dzhabrailov (dzh-a-v)
 Licensed under **GNU GPL v3.0** — see [LICENSE](LICENSE).
