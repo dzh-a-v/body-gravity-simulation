@@ -43,6 +43,7 @@ Roadmap:
 ## License
 
 Copyright © 2025 Arsen Dzhabrailov (dzh-a-v)
+
 Licensed under **GNU GPL v3.0** — see [LICENSE](LICENSE).
 ___
 
@@ -83,4 +84,5 @@ r_new = r + v_new * dt.
 ## Лицензия
 
 Copyright © 2025 Arsen Dzhabrailov (dzh-a-v)
+
 Licensed under **GNU GPL v3.0** — see [LICENSE](LICENSE).
