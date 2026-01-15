@@ -59,6 +59,7 @@ private:
     QPushButton* pauseButton;
     QPushButton* restartButton;
     QSlider* speedSlider;
+    QPushButton* saveLogButton;
 
     // Logic
     Simulation* sim;

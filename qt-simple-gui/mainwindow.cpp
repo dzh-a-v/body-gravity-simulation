@@ -15,6 +15,9 @@
 #include <QSlider>
 #include <QGroupBox>
 #include <QSet>
+#include <QFileDialog>
+#include <QFile>
+#include <QTextStream>
 #include <algorithm>
 #include <sstream>
 #include <iomanip>
@@ -235,10 +238,27 @@ MainWindow::MainWindow(QWidget* parent)
 
     // --- Control Buttons ---
     pauseButton = new QPushButton("⏹ Stop");
+    saveLogButton = new QPushButton("💾 Save Log");
     restartButton = new QPushButton("🔁 Restart Setup");
     restartButton->setEnabled(false);
 
     connect(pauseButton, &QPushButton::clicked, this, &MainWindow::togglePause);
+    connect(saveLogButton, &QPushButton::clicked, this, [this]() {
+        QString filename = QFileDialog::getSaveFileName(
+            this,
+            "Save Simulation Log",
+            "gravity_log.txt",
+            "Text Files (*.txt);;All Files (*)"
+        );
+        if (!filename.isEmpty()) {
+            QFile file(filename);
+            if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+                QTextStream out(&file);
+                out << logView->toPlainText();
+                file.close();
+            }
+        }
+        });
     connect(restartButton, &QPushButton::clicked, this, [this]() {
         stack->setCurrentWidget(setupPage);
         setWindowTitle("Gravity Simulator — Setup");
@@ -248,6 +268,7 @@ MainWindow::MainWindow(QWidget* parent)
 
     QHBoxLayout* controlLayout = new QHBoxLayout();
     controlLayout->addWidget(pauseButton);
+    controlLayout->addWidget(saveLogButton);      // ← now correctly between pause and restart
     controlLayout->addWidget(restartButton);
 
     // --- Final sim page layout ---

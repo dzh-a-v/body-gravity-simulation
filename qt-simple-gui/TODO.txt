@@ -1,0 +1,1 @@
+- put G into helpers.h, not in the physics.h
