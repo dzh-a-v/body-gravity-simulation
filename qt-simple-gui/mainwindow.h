@@ -30,6 +30,7 @@ public slots:
     void addBodyRow();
     void resetToDefault();
     void removeSelectedBody();
+    void addPresetBody();
 
 private:
     void updatePropertiesTable(const Simulation& sim);

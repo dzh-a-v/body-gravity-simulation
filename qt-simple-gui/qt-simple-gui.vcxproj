@@ -99,6 +99,7 @@
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
       <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).moc</QtMocFileName>
     </ClCompile>
+    <ClCompile Include="presets.cpp" />
     <ClCompile Include="simulation.cpp" />
     <QtRcc Include="qtsimplegui.qrc" />
     <QtUic Include="qtsimplegui.ui" />
@@ -110,6 +111,7 @@
     <ClInclude Include="helpers.h" />
     <QtMoc Include="mainwindow.h" />
     <ClInclude Include="physics.h" />
+    <ClInclude Include="presets.h" />
     <ClInclude Include="simulation.h" />
   </ItemGroup>
   <ItemGroup>

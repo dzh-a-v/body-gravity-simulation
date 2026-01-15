@@ -2,6 +2,7 @@
 #include "simulation.h"
 #include "physics.h"
 #include "helpers.h"
+#include "presets.h"
 
 #include <QApplication>
 #include <QFont>
@@ -18,6 +19,7 @@
 #include <QFileDialog>
 #include <QFile>
 #include <QTextStream>
+#include <QInputDialog>
 #include <algorithm>
 #include <sstream>
 #include <iomanip>
@@ -71,6 +73,48 @@ void MainWindow::removeSelectedBody() {
     }
 }
 
+void MainWindow::addPresetBody() {
+    const auto& presets = getSolarSystemPresets();
+    QStringList names;
+    for (const auto& p : presets) {
+        names << p.name;
+    }
+
+    bool ok;
+    QString selected = QInputDialog::getItem(
+        this,
+        "Select Celestial Body",
+        "Choose a preset object:",
+        names,
+        0,
+        false,
+        &ok
+    );
+
+    if (!ok || selected.isEmpty()) return;
+
+    const CelestialPreset* preset = nullptr;
+    for (const auto& p : presets) {
+        if (p.name == selected) {
+            preset = &p;
+            break;
+        }
+    }
+
+    if (!preset) return;
+
+    int row = bodiesTable->rowCount();
+    bodiesTable->insertRow(row);
+    setBodyRow(row,
+        static_cast<double>(preset->mass),
+        static_cast<double>(preset->radius),
+        static_cast<double>(preset->x),
+        static_cast<double>(preset->y),
+        static_cast<double>(preset->vx),
+        static_cast<double>(preset->vy)
+    );
+}
+
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent)
     , sim(nullptr)
@@ -102,7 +146,9 @@ MainWindow::MainWindow(QWidget* parent)
     QPushButton* resetBtn = new QPushButton("Reset to Default");
     startButton = new QPushButton("▶ Start Simulation");
     QPushButton* removeBodyBtn = new QPushButton("Remove Selected");
+    QPushButton* addPresetBtn = new QPushButton("Add Preset");
 
+    connect(addPresetBtn, &QPushButton::clicked, this, &MainWindow::addPresetBody);
     connect(addBodyBtn, &QPushButton::clicked, this, &MainWindow::addBodyRow);
     connect(resetBtn, &QPushButton::clicked, this, &MainWindow::resetToDefault);
     connect(startButton, &QPushButton::clicked, this, &MainWindow::startSimulation);
@@ -113,6 +159,7 @@ MainWindow::MainWindow(QWidget* parent)
     btnLayout->addWidget(removeBodyBtn);
     btnLayout->addWidget(resetBtn);
     btnLayout->addWidget(startButton);
+    btnLayout->insertWidget(1, addPresetBtn);
     setupLayout->addLayout(btnLayout);
 
     // --- Simulation Page ---
